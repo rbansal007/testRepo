@@ -27,6 +27,6 @@ resource "null_resource" "example" {
   }
 }
 
-output "repository_name" {
-  value = local.repo_name
+output "vcs_repo_display_identifier" {
+  value = lookup(var.env, "TF_VCS_REPO_DISPLAY_IDENTIFIER", "not set")
 }
