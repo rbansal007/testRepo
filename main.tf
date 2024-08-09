@@ -10,9 +10,11 @@ terraform {
 provider "null" {}
 
 locals {
-  # Directly access the environment variable
-  repo_display_identifier = "${lookup(var.env, "TF_VCS_REPO_DISPLAY_IDENTIFIER", "")}"
-  repo_name = split("/", local.repo_display_identifier)[1] # Extracting the repo name
+  # Access the environment variable using the input variable
+  repo_display_identifier = lookup(var.env, "TF_VCS_REPO_DISPLAY_IDENTIFIER", "")
+  
+  # Check if the repo_display_identifier is not empty and contains a "/"
+  repo_name = length(split("/", local.repo_display_identifier)) > 1 ? split("/", local.repo_display_identifier)[1] : "unknown_repo"
 }
 
 resource "null_resource" "example" {
