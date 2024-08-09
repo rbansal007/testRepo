@@ -30,3 +30,7 @@ resource "null_resource" "example" {
 output "vcs_repo_display_identifier" {
   value = lookup(var.env, "TF_VCS_REPO_DISPLAY_IDENTIFIER", "not set")
 }
+
+output "all_env_vars" {
+  value = var.env
+}
