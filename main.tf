@@ -11,7 +11,7 @@ provider "null" {}
 
 locals {
   # Access the environment variable using the input variable
-  repo_display_identifier = lookup(var.env, "TFC_CONFIGURATION_VERSION_GIT_REPO", "")
+  repo_display_identifier = lookup(var.env, "TFC_CONFIGURATION_VERSION_GIT_COMMIT_SHA", "")
   
   # Check if the repo_display_identifier is not empty and contains a "/"
   repo_name = length(split("/", local.repo_display_identifier)) > 1 ? split("/", local.repo_display_identifier)[1] : "unknown_repo"
@@ -28,5 +28,5 @@ resource "null_resource" "example" {
 }
 
 output "vcs_repo_display_identifier" {
-  value = lookup(var.env, "TFC_CONFIGURATION_VERSION_GIT_REPO", "not set")
+  value = lookup(var.env, "TFC_CONFIGURATION_VERSION_GIT_COMMIT_SHA", "not set")
 }
