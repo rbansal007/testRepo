@@ -1,23 +1,27 @@
 provider "null" {}
 
-# Define a variable to hold the repo name from the environment variable
-variable "repo_name" {
-  description = "The name of the GitHub repository"
-  type        = string
-  default     = ""
-}
-
-# Use a local-exec provisioner to print the repo name
-resource "null_resource" "print_repo_name" {
+# Resource to validate the TFC_CONFIGURATION_VERSION_REPO_ID environment variable
+resource "null_resource" "validate_repo_name" {
   provisioner "local-exec" {
-    command = "echo Repository Name: ${var.repo_name}"
-    environment = {
-      repo_name = getenv("TFC_CONFIGURATION_VERSION_REPO_ID")
-    }
+    command = <<EOT
+      if [ -z "$TFC_CONFIGURATION_VERSION_REPO_ID" ]; then
+        echo "TFC_CONFIGURATION_VERSION_REPO_ID is not set."
+        exit 1
+      else
+        echo "TFC_CONFIGURATION_VERSION_REPO_ID is set to: $TFC_CONFIGURATION_VERSION_REPO_ID"
+        # Optionally, you can add a regex check to validate the format
+        if [[ "$TFC_CONFIGURATION_VERSION_REPO_ID" =~ ^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$ ]]; then
+          echo "The repository name format is valid."
+        else
+          echo "The repository name format is invalid."
+          exit 1
+        fi
+      fi
+    EOT
   }
 }
 
-# Output the repository name directly from the environment variable
+# Output the repository name for reference
 output "repository_name" {
-  value = getenv("TFC_CONFIGURATION_VERSION_REPO_ID") != "" ? getenv("TFC_CONFIGURATION_VERSION_REPO_ID") : "default-repo-name"
+  value = "TFC_CONFIGURATION_VERSION_REPO_ID: ${var.repo_name}"
 }
