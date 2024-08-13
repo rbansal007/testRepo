@@ -17,11 +17,7 @@ resource "null_resource" "print_repo_name" {
   }
 }
 
-# Optionally, you can set a default value if the environment variable is not set
-locals {
-  repo_name = getenv("TFC_CONFIGURATION_VERSION_REPO_ID") != "" ? getenv("TFC_CONFIGURATION_VERSION_REPO_ID") : "default-repo-name"
-}
-
+# Output the repository name directly from the environment variable
 output "repository_name" {
-  value = local.repo_name
+  value = getenv("TFC_CONFIGURATION_VERSION_REPO_ID") != "" ? getenv("TFC_CONFIGURATION_VERSION_REPO_ID") : "default-repo-name"
 }
