@@ -21,7 +21,7 @@ resource "null_resource" "validate_repo_name" {
   }
 }
 
-# Output the repository name for reference
+# Output the value of the TFC_CONFIGURATION_VERSION_REPO_ID environment variable
 output "repository_name" {
-  value = "TFC_CONFIGURATION_VERSION_REPO_ID: ${var.repo_name}"
+  value = "TFC_CONFIGURATION_VERSION_REPO_ID: ${env.TFC_CONFIGURATION_VERSION_REPO_ID}"
 }
