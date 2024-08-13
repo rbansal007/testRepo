@@ -1,32 +1,27 @@
-terraform {
-  required_providers {
-    null = {
-      source  = "hashicorp/null"
-      version = "~> 3.1"
+provider "null" {}
+
+# Define a variable to hold the repo name from the environment variable
+variable "repo_name" {
+  description = "The name of the GitHub repository"
+  type        = string
+  default     = ""
+}
+
+# Use a local-exec provisioner to print the repo name
+resource "null_resource" "print_repo_name" {
+  provisioner "local-exec" {
+    command = "echo Repository Name: ${var.repo_name}"
+    environment = {
+      repo_name = getenv("TFC_CONFIGURATION_VERSION_REPO_ID")
     }
   }
 }
 
-provider "null" {}
-
+# Optionally, you can set a default value if the environment variable is not set
 locals {
-  # Access the environment variable using the input variable
-  repo_display_identifier = lookup(var.env, "TFC_CONFIGURATION_VERSION_GIT_COMMIT_SHA", "")
-  
-  # Check if the repo_display_identifier is not empty and contains a "/"
-  repo_name = length(split("/", local.repo_display_identifier)) > 1 ? split("/", local.repo_display_identifier)[1] : "unknown_repo"
+  repo_name = getenv("TFC_CONFIGURATION_VERSION_REPO_ID") != "" ? getenv("TFC_CONFIGURATION_VERSION_REPO_ID") : "default-repo-name"
 }
 
-resource "null_resource" "example" {
-  provisioner "local-exec" {
-    command = "echo The repository name is: ${local.repo_name}"
-  }
-
-  triggers = {
-    repo_name = local.repo_name
-  }
-}
-
-output "vcs_repo_display_identifier" {
-  value = lookup(var.env, "TFC_CONFIGURATION_VERSION_GIT_COMMIT_SHA", "not set")
+output "repository_name" {
+  value = local.repo_name
 }
