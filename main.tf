@@ -18,7 +18,7 @@ provider "random" {
 }
 
 resource "random_password" "password" {
-  length           = 30
+  length           = 35
   special          = true
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
