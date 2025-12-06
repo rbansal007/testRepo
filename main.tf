@@ -1,24 +1,22 @@
-terraform { 
+terraform {
   required_providers {
-    random = {
-      source = "hashicorp/random"
-      version = "3.6.3"
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 3.2"
     }
-  }  
-}
-
-resource "null_resource" "example" {
-  provisioner "local-exec" {
-    command = "echo Hello from TFE!"
   }
 }
 
-provider "random" {
-  # Configuration options
+resource "null_resource" "test_agent_vars" {
+  triggers = {
+    run_id = timestamp()
+  }
+
+  provisioner "local-exec" {
+    command = "echo '✅ AGENT SUCCESS: SN_USER=$SN_USER | PATH=$BB_SSH_PRIVATE_KEY_PATH'"
+  }
 }
 
-resource "random_password" "password" {
-  length           = 35
-  special          = true
-  override_special = "!#$%&*()-_=+[]{}<>:?"
-}
+# These should come from agent hooks
+variable "SN_USER" { default = "NOT_FROM_AGENT" }
+variable "BB_SSH_PRIVATE_KEY_PATH" { default = "NOT_FROM_AGENT" }
