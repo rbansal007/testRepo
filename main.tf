@@ -1,5 +1,15 @@
 terraform {
   required_version = ">= 1.0"
+  
+  cloud {
+    hostname     = "rbtfe.tf-support.hashicorpdemo.com"
+    organization = "test"
+    
+    workspaces {
+      name = "testRepo"
+    }
+  }
+  
   required_providers {
     aws = {
       source  = "hashicorp/aws"
