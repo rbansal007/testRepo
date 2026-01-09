@@ -1,0 +1,24 @@
+alarms:
+  - name: "rds_cpu_writer_crit"
+    datapoints_to_alarm: "10"
+    evaluation_periods: "10"
+    period: "60"
+    threshold: "90"
+  
+  - name: "rds_cpu_writer_warn"
+    datapoints_to_alarm: "5"
+    evaluation_periods: "10"
+    period: "60"
+    threshold: "88"
+
+  - name: "rds_cpu_reader_crit"
+    datapoints_to_alarm: "10"
+    evaluation_periods: "10"
+    period: "60"
+    threshold: "95"
+  
+  - name: "rds_cpu_reader_warn"
+    datapoints_to_alarm: "5"
+    evaluation_periods: "10"
+    period: "60"
+    threshold: "77"
