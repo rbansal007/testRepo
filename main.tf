@@ -25,7 +25,7 @@ provider "aws" {
 variable "s3_uri_artifact_custom_settings_yaml" {
   description = "S3 URI for custom settings YAML"
   type        = string
-  default     = ""
+  default     = "custom-settings.yaml"  # Set to non-empty to trigger YAML loading
 }
 
 variable "cluster_identifier" {
@@ -37,13 +37,13 @@ variable "cluster_identifier" {
 variable "sns_warning_email" {
   description = "SNS topic ARN for warning alerts"
   type        = string
-  default     = "arn:aws:sns:ap-south-1:123456789012:warning-topic"
+  default     = "arn:aws:sns:ap-south-1:044036819989:warning-topic"
 }
 
 variable "sns_critical_email" {
   description = "SNS topic ARN for critical alerts"
   type        = string
-  default     = "arn:aws:sns:ap-south-1:123456789012:critical-topic"
+  default     = "arn:aws:sns:ap-south-1:044036819989:critical-topic"
 }
 
 # Simulating the data source behavior using local_file
