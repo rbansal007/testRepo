@@ -48,15 +48,19 @@ variable "sns_critical_email" {
 
 # Simulating the data source behavior using local_file
 # In real scenario, this would be cpaws_s3_object_download
+# Removed count to ensure stable evaluation in TFE
 data "local_file" "custom_settings_yaml" {
-  count    = var.s3_uri_artifact_custom_settings_yaml != "" ? 1 : 0
   filename = "${path.module}/custom-settings.yaml"
 }
 
 locals {
-  # Decode YAML from file content
+  # Decode YAML from file content - more stable evaluation for TFE
+  # Read file content first, then decode - avoid array indexing with try()
+  yaml_file_content = data.local_file.custom_settings_yaml.content
+  
+  # Decode YAML with explicit null handling for TFE stability
   custom_settings_yaml = var.s3_uri_artifact_custom_settings_yaml != "" ? (
-    try(yamldecode(data.local_file.custom_settings_yaml[0].content), {})
+    yamldecode(local.yaml_file_content)
   ) : {}
 }
 
