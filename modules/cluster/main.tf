@@ -132,82 +132,86 @@ resource "aws_cloudwatch_metric_alarm" "rds_cpu_writer_crit_broken" {
 }
 
 # TFE-COMPATIBLE VERSION - Uses pre-computed locals for stable evaluation
-resource "aws_cloudwatch_metric_alarm" "rds_cpu_writer_crit" {
-  alarm_name          = "${var.cluster_identifier}-rds_cpu_writer_crit"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  datapoints_to_alarm = local.datapoints_writer_crit
-  evaluation_periods  = local.evaluation_periods_writer_crit
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/RDS"
-  period              = local.period_writer_crit
-  statistic           = "Average"
-  threshold           = local.threshold_writer_crit
+# Temporarily commented out due to IAM permission constraints
+# resource "aws_cloudwatch_metric_alarm" "rds_cpu_writer_crit" {
+#   alarm_name          = "${var.cluster_identifier}-rds_cpu_writer_crit"
+#   comparison_operator = "GreaterThanOrEqualToThreshold"
+#   datapoints_to_alarm = local.datapoints_writer_crit
+#   evaluation_periods  = local.evaluation_periods_writer_crit
+#   metric_name         = "CPUUtilization"
+#   namespace           = "AWS/RDS"
+#   period              = local.period_writer_crit
+#   statistic           = "Average"
+#   threshold           = local.threshold_writer_crit
+#
+#   alarm_description = "CRITICAL - ${var.cluster_identifier} DB WRITER CPUUtilization >= ${local.threshold_writer_crit}%"
+#
+#   alarm_actions = [var.sns_critical_email]
+#   dimensions = {
+#     DBClusterIdentifier = var.cluster_identifier
+#     Role                = "WRITER"
+#   }
+# }
 
-  alarm_description = "CRITICAL - ${var.cluster_identifier} DB WRITER CPUUtilization >= ${local.threshold_writer_crit}%"
+# Temporarily commented out due to IAM permission constraints
+# resource "aws_cloudwatch_metric_alarm" "rds_cpu_writer_warn" {
+#   alarm_name          = "${var.cluster_identifier}-rds_cpu_writer_warn"
+#   comparison_operator = "GreaterThanOrEqualToThreshold"
+#   datapoints_to_alarm = local.datapoints_writer_warn
+#   evaluation_periods  = local.evaluation_periods_writer_warn
+#   metric_name         = "CPUUtilization"
+#   namespace           = "AWS/RDS"
+#   period              = local.period_writer_warn
+#   statistic           = "Average"
+#   threshold           = local.threshold_writer_warn
+#
+#   alarm_description = "WARNING - ${var.cluster_identifier} DB WRITER CPUUtilization >= ${local.threshold_writer_warn}%"
+#
+#   alarm_actions = [var.sns_warning_email]
+#   dimensions = {
+#     DBClusterIdentifier = var.cluster_identifier
+#     Role                = "WRITER"
+#   }
+# }
 
-  alarm_actions = [var.sns_critical_email]
-  dimensions = {
-    DBClusterIdentifier = var.cluster_identifier
-    Role                = "WRITER"
-  }
-}
+# Temporarily commented out due to IAM permission constraints
+# resource "aws_cloudwatch_metric_alarm" "rds_cpu_reader_crit" {
+#   alarm_name          = "${var.cluster_identifier}-rds_cpu_reader_crit"
+#   comparison_operator = "GreaterThanOrEqualToThreshold"
+#   datapoints_to_alarm = local.datapoints_reader_crit
+#   evaluation_periods  = local.evaluation_periods_reader_crit
+#   metric_name         = "CPUUtilization"
+#   namespace           = "AWS/RDS"
+#   period              = local.period_reader_crit
+#   statistic           = "Average"
+#   threshold           = local.threshold_reader_crit
+#
+#   alarm_description = "CRITICAL - ${var.cluster_identifier} DB READER CPUUtilization >= ${local.threshold_reader_crit}%"
+#
+#   alarm_actions = [var.sns_critical_email]
+#   dimensions = {
+#     DBClusterIdentifier = var.cluster_identifier
+#     Role                = "READER"
+#   }
+# }
 
-resource "aws_cloudwatch_metric_alarm" "rds_cpu_writer_warn" {
-  alarm_name          = "${var.cluster_identifier}-rds_cpu_writer_warn"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  datapoints_to_alarm = local.datapoints_writer_warn
-  evaluation_periods  = local.evaluation_periods_writer_warn
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/RDS"
-  period              = local.period_writer_warn
-  statistic           = "Average"
-  threshold           = local.threshold_writer_warn
-
-  alarm_description = "WARNING - ${var.cluster_identifier} DB WRITER CPUUtilization >= ${local.threshold_writer_warn}%"
-
-  alarm_actions = [var.sns_warning_email]
-  dimensions = {
-    DBClusterIdentifier = var.cluster_identifier
-    Role                = "WRITER"
-  }
-}
-
-resource "aws_cloudwatch_metric_alarm" "rds_cpu_reader_crit" {
-  alarm_name          = "${var.cluster_identifier}-rds_cpu_reader_crit"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  datapoints_to_alarm = local.datapoints_reader_crit
-  evaluation_periods  = local.evaluation_periods_reader_crit
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/RDS"
-  period              = local.period_reader_crit
-  statistic           = "Average"
-  threshold           = local.threshold_reader_crit
-
-  alarm_description = "CRITICAL - ${var.cluster_identifier} DB READER CPUUtilization >= ${local.threshold_reader_crit}%"
-
-  alarm_actions = [var.sns_critical_email]
-  dimensions = {
-    DBClusterIdentifier = var.cluster_identifier
-    Role                = "READER"
-  }
-}
-
-resource "aws_cloudwatch_metric_alarm" "rds_cpu_reader_warn" {
-  alarm_name          = "${var.cluster_identifier}-rds_cpu_reader_warn"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  datapoints_to_alarm = local.datapoints_reader_warn
-  evaluation_periods  = local.evaluation_periods_reader_warn
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/RDS"
-  period              = local.period_reader_warn
-  statistic           = "Average"
-  threshold           = local.threshold_reader_warn
-
-  alarm_description = "WARNING - ${var.cluster_identifier} DB READER CPUUtilization >= ${local.threshold_reader_warn}%"
-
-  alarm_actions = [var.sns_warning_email]
-  dimensions = {
-    DBClusterIdentifier = var.cluster_identifier
-    Role                = "READER"
-  }
-}
+# Temporarily commented out due to IAM permission constraints
+# resource "aws_cloudwatch_metric_alarm" "rds_cpu_reader_warn" {
+#   alarm_name          = "${var.cluster_identifier}-rds_cpu_reader_warn"
+#   comparison_operator = "GreaterThanOrEqualToThreshold"
+#   datapoints_to_alarm = local.datapoints_reader_warn
+#   evaluation_periods  = local.evaluation_periods_reader_warn
+#   metric_name         = "CPUUtilization"
+#   namespace           = "AWS/RDS"
+#   period              = local.period_reader_warn
+#   statistic           = "Average"
+#   threshold           = local.threshold_reader_warn
+#
+#   alarm_description = "WARNING - ${var.cluster_identifier} DB READER CPUUtilization >= ${local.threshold_reader_warn}%"
+#
+#   alarm_actions = [var.sns_warning_email]
+#   dimensions = {
+#     DBClusterIdentifier = var.cluster_identifier
+#     Role                = "READER"
+#   }
+# }
