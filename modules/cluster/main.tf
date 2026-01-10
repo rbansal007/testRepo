@@ -215,3 +215,30 @@ resource "aws_cloudwatch_metric_alarm" "rds_cpu_writer_crit_broken" {
 #     Role                = "READER"
 #   }
 # }
+
+# Test resource to verify YAML configuration loading
+resource "local_file" "alarm_config_test" {
+  filename = "${path.module}/alarm_config_output.txt"
+  content  = <<-EOT
+    Alarm Configuration Test Results
+    =================================
+    Generated at: ${timestamp()}
+    
+    Cluster: ${var.cluster_identifier}
+    
+    YAML Configuration Loaded:
+    ${jsonencode(var.custom_settings_yaml)}
+    
+    Computed Alarm Thresholds:
+    --------------------------
+    Writer Critical: ${local.threshold_writer_crit}% (datapoints: ${local.datapoints_writer_crit}, evaluation: ${local.evaluation_periods_writer_crit}, period: ${local.period_writer_crit}s)
+    Writer Warning:  ${local.threshold_writer_warn}% (datapoints: ${local.datapoints_writer_warn}, evaluation: ${local.evaluation_periods_writer_warn}, period: ${local.period_writer_warn}s)
+    Reader Critical: ${local.threshold_reader_crit}% (datapoints: ${local.datapoints_reader_crit}, evaluation: ${local.evaluation_periods_reader_crit}, period: ${local.period_reader_crit}s)
+    Reader Warning:  ${local.threshold_reader_warn}% (datapoints: ${local.datapoints_reader_warn}, evaluation: ${local.evaluation_periods_reader_warn}, period: ${local.period_reader_warn}s)
+    
+    SNS Topics:
+    -----------
+    Critical: ${var.sns_critical_email}
+    Warning:  ${var.sns_warning_email}
+  EOT
+}
