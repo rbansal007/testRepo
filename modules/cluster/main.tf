@@ -132,28 +132,26 @@ resource "aws_cloudwatch_metric_alarm" "rds_cpu_writer_crit_broken" {
 }
 
 # TFE-COMPATIBLE VERSION - Uses pre-computed locals for stable evaluation
-# Temporarily commented out due to IAM permission constraints
-# Uncommented to test customer scenario, but requires cloudwatch:PutMetricAlarm permission
-# resource "aws_cloudwatch_metric_alarm" "rds_cpu_writer_crit" {
-#   count               = 1  # Customer is using count, which can cause issues with dynamic lookups
-#   alarm_name          = "${var.cluster_identifier}-rds_cpu_writer_crit"
-#   comparison_operator = "GreaterThanOrEqualToThreshold"
-#   datapoints_to_alarm = local.datapoints_writer_crit
-#   evaluation_periods  = local.evaluation_periods_writer_crit
-#   metric_name         = "CPUUtilization"
-#   namespace           = "AWS/RDS"
-#   period              = local.period_writer_crit
-#   statistic           = "Average"
-#   threshold           = local.threshold_writer_crit
-#
-#   alarm_description = "CRITICAL - ${var.cluster_identifier} DB WRITER CPUUtilization >= ${local.threshold_writer_crit}%"
-#
-#   alarm_actions = [var.sns_critical_email]
-#   dimensions = {
-#     DBClusterIdentifier = var.cluster_identifier
-#     Role                = "WRITER"
-#   }
-# }
+resource "aws_cloudwatch_metric_alarm" "rds_cpu_writer_crit" {
+  count               = 1
+  alarm_name          = "${var.cluster_identifier}-rds_cpu_writer_crit"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  datapoints_to_alarm = local.datapoints_writer_crit
+  evaluation_periods  = local.evaluation_periods_writer_crit
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/RDS"
+  period              = local.period_writer_crit
+  statistic           = "Average"
+  threshold           = local.threshold_writer_crit
+
+  alarm_description = "CRITICAL - ${var.cluster_identifier} DB WRITER CPUUtilization >= ${local.threshold_writer_crit}%"
+
+  alarm_actions = [var.sns_critical_email]
+  dimensions = {
+    DBClusterIdentifier = var.cluster_identifier
+    Role                = "WRITER"
+  }
+}
 
 resource "aws_cloudwatch_metric_alarm" "rds_cpu_writer_warn" {
   count               = 1
